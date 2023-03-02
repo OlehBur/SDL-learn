@@ -151,6 +151,10 @@
     <Image Include="Image.png" />
     <Image Include="Image1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="06. Mutter.mp3" />
+    <Media Include="gin.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

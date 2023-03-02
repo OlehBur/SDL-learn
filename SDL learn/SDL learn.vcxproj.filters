@@ -32,4 +32,12 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="06. Mutter.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="gin.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
 </Project>
