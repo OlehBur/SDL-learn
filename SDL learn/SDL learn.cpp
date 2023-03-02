@@ -43,6 +43,7 @@ void DrawText(SDL_Renderer* render, const int& x, const int& y, const string& st
 
 	SDL_DestroyTexture(text);//del data
 	text = nullptr;
+	TTF_CloseFont(appFont);
 }
 
 
@@ -111,45 +112,45 @@ int main(int argc, char** argv) {
 			case SDL_QUIT:
 				isRunning = false;
 				break;
-				//case SDL_KEYDOWN:
-				//	switch (event.key.keysym.sym) {
-				//	case SDLK_UP:
-				//		playerRect.y = frameHeight * 8;
-				//		playerPosition.y -= playerSpeed * deltaTime;
-				//		break;
-				//	case SDLK_DOWN:
-				//		playerRect.y = frameHeight * 10;
-				//		playerPosition.y += playerSpeed * deltaTime;
-				//		break;
-				//	case SDLK_RIGHT:
-				//		playerRect.y = frameHeight * 11;
-				//		playerPosition.x += playerSpeed*deltaTime;//move player on 100 px Regardles of the speed of the pc
-				//		break;
-				//	case SDLK_LEFT:
-				//		playerRect.y = frameHeight * 9;
-				//		playerPosition.x -= playerSpeed * deltaTime;
-				//		break;
-				//	}
-				//	break;
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+					case SDLK_UP:
+						playerRect.y = frameHeight * 8;
+						playerPosition.y -= playerSpeed * deltaTime;
+						break;
+					case SDLK_DOWN:
+						playerRect.y = frameHeight * 10;
+						playerPosition.y += playerSpeed * deltaTime;
+						break;
+					case SDLK_RIGHT:
+						playerRect.y = frameHeight * 11;
+						playerPosition.x += playerSpeed*deltaTime;//move player on 100 px Regardles of the speed of the pc
+						break;
+					case SDLK_LEFT:
+						playerRect.y = frameHeight * 9;
+						playerPosition.x -= playerSpeed * deltaTime;
+						break;
+					}
+					break;
 			}
 
-			keyState = SDL_GetKeyboardState(NULL);//get ALL keys that exist now
-			if (keyState[SDL_SCANCODE_LEFT]) {
-				playerRect.y = frameHeight * 9;
-				playerPosition.x -= playerSpeed * deltaTime;
-			}
-			else if (keyState[SDL_SCANCODE_RIGHT]) {
-				playerRect.y = frameHeight * 11;
-				playerPosition.x += playerSpeed * deltaTime;//move player on 100 px Regardles of the speed of the pc
-			}
-			else if (keyState[SDL_SCANCODE_UP]) {
-				playerRect.y = frameHeight * 8;
-				playerPosition.y -= playerSpeed * deltaTime;
-			}
-			else if (keyState[SDL_SCANCODE_DOWN]) {
-				playerRect.y = frameHeight * 10;
-				playerPosition.y += playerSpeed * deltaTime;
-			}
+			//keyState = SDL_GetKeyboardState(NULL);//get ALL keys that exist now
+			//if (keyState[SDL_SCANCODE_LEFT]) {
+			//	playerRect.y = frameHeight * 9;
+			//	playerPosition.x -= playerSpeed * deltaTime;
+			//}
+			//else if (keyState[SDL_SCANCODE_RIGHT]) {
+			//	playerRect.y = frameHeight * 11;
+			//	playerPosition.x += playerSpeed * deltaTime;//move player on 100 px Regardles of the speed of the pc
+			//}
+			//else if (keyState[SDL_SCANCODE_UP]) {
+			//	playerRect.y = frameHeight * 8;
+			//	playerPosition.y -= playerSpeed * deltaTime;
+			//}
+			//else if (keyState[SDL_SCANCODE_DOWN]) {
+			//	playerRect.y = frameHeight * 10;
+			//	playerPosition.y += playerSpeed * deltaTime;
+			//}
 
 			//switch (*keyState)
 			//{
