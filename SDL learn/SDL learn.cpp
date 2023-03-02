@@ -18,7 +18,9 @@ SDL_Texture* LoadTexture(string filePath, SDL_Renderer* renderTarg) {
 	if (surface == NULL)
 		cout << "BMP surface error\n";
 	else {
+		SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 0));//erase some color from img
 		texture = SDL_CreateTextureFromSurface(renderTarg, surface);
+		SDL_SetTextureColorMod(texture, 20, 100, 10);//add color mask on your img
 		if (texture == NULL)
 			cout << "Error texture init\n";
 	}
@@ -54,6 +56,7 @@ int main(int argc, char** argv) {
 
 	SDL_Window* window = nullptr;
 	SDL_Texture* img = nullptr;
+	SDL_Texture* img1 = nullptr;
 	SDL_Renderer* renderTarg = nullptr;
 	SDL_Rect playerRect;
 	SDL_Rect playerPosition;
@@ -73,7 +76,8 @@ int main(int argc, char** argv) {
 
 	window = SDL_CreateWindow("Test Wnd", 50, 30, Screen_Width - 100, Screen_Height - 70, SDL_WINDOW_OPENGL);
 	renderTarg = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);//the renderer uses hardware acceleration | present is synchronized with the refresh rate
-	img = LoadTexture("Image.png", renderTarg);//Image.png
+	img = LoadTexture("Image.png", renderTarg);//Image.jpg
+	img1 = LoadTexture("Image1.png", renderTarg);
 
 	//TTF_Font* appFont = TTF_OpenFont("text.ttf", 20);
 	SDL_Color textColor = { 121,55,0,255 };
@@ -100,7 +104,7 @@ int main(int argc, char** argv) {
 	playerPosition.h = frameHeight * 3;
 
 
-	SDL_SetRenderDrawColor(renderTarg, 90, 12, 41, 200);
+	//SDL_SetRenderDrawColor(renderTarg, 90, 12, 41, 200);
 
 	while (isRunning) {
 		prevTime = currentTime;
@@ -181,6 +185,7 @@ int main(int argc, char** argv) {
 
 		SDL_RenderClear(renderTarg);//Clear the current rendering target with the drawing color.
 		SDL_RenderCopy(renderTarg, img, &playerRect, &playerPosition);//(Copy to the screen) Copy a portion of the texture to the current rendering target.
+		SDL_RenderCopy(renderTarg, img1, NULL, NULL);
 		//SDL_RenderCopy(renderTarg, text, NULL, &textRect);
 		DrawText(renderTarg, 234, 575, "cscscsc");
 		SDL_RenderPresent(renderTarg); //Update the screen
@@ -190,10 +195,11 @@ int main(int argc, char** argv) {
 
 	SDL_DestroyWindow(window);
 	SDL_DestroyTexture(img);//free texture
+	SDL_DestroyTexture(img1);
 	//SDL_DestroyTexture(text);
 	SDL_DestroyRenderer(renderTarg);
 	window = nullptr;
-	img = nullptr;
+	img= img1 = nullptr;
 	//text = nullptr;
 	renderTarg = nullptr;
 	TTF_Quit();
