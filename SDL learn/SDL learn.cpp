@@ -27,6 +27,25 @@ SDL_Texture* LoadTexture(string filePath, SDL_Renderer* renderTarg) {
 	return texture;
 }
 
+void DrawText(SDL_Renderer* render, const int& x, const int& y, const string& str, const string fontPath = "text.ttf") {
+	TTF_Font* appFont = TTF_OpenFont(fontPath.c_str(), 20);
+	SDL_Color textColor = { 121,55,0,255 };
+	SDL_Surface* textSurface = TTF_RenderText_Solid(appFont, str.c_str(), textColor);
+	SDL_Texture* text = SDL_CreateTextureFromSurface(render, textSurface);
+	SDL_Rect textRect = { x,y,0,0 };
+
+	SDL_QueryTexture(text, NULL, NULL, &textRect.w, &textRect.h);//get w h text
+
+	SDL_FreeSurface(textSurface);
+	textSurface = nullptr;
+
+	SDL_RenderCopy(render, text, NULL, &textRect);//draw text
+
+	SDL_DestroyTexture(text);//del data
+	text = nullptr;
+}
+
+
 int main(int argc, char** argv) {
 	const Uint8* keyState;
 	float frameTime = 0, deltaTime = 0, playerSpeed = 50.0f;
@@ -55,16 +74,16 @@ int main(int argc, char** argv) {
 	renderTarg = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);//the renderer uses hardware acceleration | present is synchronized with the refresh rate
 	img = LoadTexture("Image.png", renderTarg);//Image.png
 
-	TTF_Font* appFont = TTF_OpenFont("text.ttf", 20);
+	//TTF_Font* appFont = TTF_OpenFont("text.ttf", 20);
 	SDL_Color textColor = { 121,55,0,255 };
-	SDL_Surface* textSurface = TTF_RenderText_Solid(appFont, "This is text writing by SDL", textColor);
+	/*SDL_Surface* textSurface = TTF_RenderText_Solid(appFont, "This is text writing by SDL", textColor);
 	SDL_Texture* text = SDL_CreateTextureFromSurface(renderTarg, textSurface);
-	SDL_Rect textRect = { 0,0,0,0 };
+	SDL_Rect textRect = { 340,690,0,0 };*/
 
-	SDL_QueryTexture(text, NULL, NULL, &textRect.w, &textRect.h);
+	/*SDL_QueryTexture(text, NULL, NULL, &textRect.w, &textRect.h);
 
 	SDL_FreeSurface(textSurface);
-	textSurface = nullptr;
+	textSurface = nullptr;*/
 
 	SDL_QueryTexture(img, NULL, NULL, &textureWidth, &textureHeight);//set attributes of a texture
 	frameWidth = textureWidth / 13;
@@ -161,7 +180,8 @@ int main(int argc, char** argv) {
 
 		SDL_RenderClear(renderTarg);//Clear the current rendering target with the drawing color.
 		SDL_RenderCopy(renderTarg, img, &playerRect, &playerPosition);//(Copy to the screen) Copy a portion of the texture to the current rendering target.
-		SDL_RenderCopy(renderTarg, text, NULL, &textRect);
+		//SDL_RenderCopy(renderTarg, text, NULL, &textRect);
+		DrawText(renderTarg, 234, 575, "cscscsc");
 		SDL_RenderPresent(renderTarg); //Update the screen
 
 
@@ -169,11 +189,11 @@ int main(int argc, char** argv) {
 
 	SDL_DestroyWindow(window);
 	SDL_DestroyTexture(img);//free texture
-	SDL_DestroyTexture(text);
+	//SDL_DestroyTexture(text);
 	SDL_DestroyRenderer(renderTarg);
 	window = nullptr;
 	img = nullptr;
-	text = nullptr;
+	//text = nullptr;
 	renderTarg = nullptr;
 	TTF_Quit();
 	IMG_Quit();
