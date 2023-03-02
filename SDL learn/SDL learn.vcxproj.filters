@@ -18,26 +18,18 @@
     <ClCompile Include="SDL learn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="text.ttf">
-      <Filter>Resource Files</Filter>
-    </Font>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Image.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Image1.png">
+    <Image Include="Player.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="06. Mutter.mp3">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="gin.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

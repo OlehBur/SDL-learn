@@ -142,18 +142,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SDL learn.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="text.ttf" />
+    <Image Include="Player.png" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Image.png" />
-    <Image Include="Image1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="06. Mutter.mp3" />
-    <Media Include="gin.wav" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
