@@ -1,5 +1,6 @@
 ﻿#include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_thread.h>
 #include <iostream>
 #include "Player.h"
 
@@ -8,6 +9,13 @@
 //float x = 0.0 has an implicit typecast from double to float.
 
 using namespace std;
+
+int ThreadFunction(void* threadData) {
+	for (int i = 0; i < 1000000; i++)
+		cout << "calc?: " << i * 2 / 33 * i << endl;
+	//cout << "thread Number: " << (int)threadData<<endl;
+	return 0;
+}
 
 int main(int argc, char** argv) {
 	SDL_Window* window = nullptr;
@@ -20,7 +28,7 @@ int main(int argc, char** argv) {
 	bool isRunning = true;
 
 	SDL_Init(SDL_INIT_VIDEO);
-	IMG_Init(IMG_INIT_PNG);
+	//IMG_Init(IMG_INIT_PNG);
 
 	window = SDL_CreateWindow("Test Wnd", 50, 30, 1920 - 100, 1080 - 70, SDL_WINDOW_OPENGL);
 	renderTarg = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);//the renderer uses hardware acceleration | present is synchronized with the refresh rate
@@ -28,6 +36,8 @@ int main(int argc, char** argv) {
 	Player player(renderTarg, "PLayer.png", 0, 0, 3, 4);
 	Player player1(renderTarg, "PLayer.png", 1000, 500, 3, 4);
 
+	SDL_Thread* thread1=SDL_CreateThread(ThreadFunction, "Thread #1", (void*)7);
+	
 	while (isRunning) {
 		prevTime = currentTime;
 		currentTime = SDL_GetTicks();
@@ -53,6 +63,7 @@ int main(int argc, char** argv) {
 		player1.Draw(renderTarg);
 		SDL_RenderPresent(renderTarg); //Update the screen
 	}
+	SDL_WaitThread(thread1, NULL);
 
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderTarg);

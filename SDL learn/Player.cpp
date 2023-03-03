@@ -3,7 +3,6 @@
 #include <iostream>
 #include <cmath>
 
-
 Player::Player(SDL_Renderer* render, string filePath, const int& x, const int& y, const int& framesX, const int& framesY) {
 	SDL_Surface* surface = IMG_Load(filePath.c_str());
 
