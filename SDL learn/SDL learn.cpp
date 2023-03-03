@@ -10,34 +10,46 @@
 
 using namespace std;
 
-int ThreadFunction(void* threadData) {
-	for (int i = 0; i < 1000000; i++)
-		cout << "calc?: " << i * 2 / 33 * i << endl;
-	//cout << "thread Number: " << (int)threadData<<endl;
-	return 0;
+SDL_Texture* LoadTexture(const string &filePath, SDL_Renderer* renderTarg) {
+	SDL_Texture* texture = nullptr;
+	SDL_Surface* surface = IMG_Load(filePath.c_str());
+
+	if (surface == NULL)
+		cout << "Img surface error\n"<<IMG_GetError()<<endl;
+	else {
+		texture = SDL_CreateTextureFromSurface(renderTarg, surface);
+		if (texture == NULL)
+			cout << "Error texture init\n";
+	}
+
+	SDL_FreeSurface(surface);
+	return texture;
 }
 
 int main(int argc, char** argv) {
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderTarg = nullptr;
 	SDL_Event event;
+	SDL_Rect cameraR = { 0,0, 1000,  800 };
 	int currentTime = 0,
 		prevTime = 0;
 	float deltaTime = 0.0f;
 	const Uint8* keyState;
+	int backgrWidth, backgrHeight;
 	bool isRunning = true;
 
 	SDL_Init(SDL_INIT_VIDEO);
-	//IMG_Init(IMG_INIT_PNG);
+	IMG_Init(IMG_INIT_PNG);
 
-	window = SDL_CreateWindow("Test Wnd", 50, 30, 1920 - 100, 1080 - 70, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Test Wnd", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 800, SDL_WINDOW_OPENGL);
 	renderTarg = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);//the renderer uses hardware acceleration | present is synchronized with the refresh rate
 
 	Player player(renderTarg, "PLayer.png", 0, 0, 3, 4);
-	Player player1(renderTarg, "PLayer.png", 1000, 500, 3, 4);
+	Player player1(renderTarg, "PLayer.png", 100, 50, 3, 4);
 
-	SDL_Thread* thread1=SDL_CreateThread(ThreadFunction, "Thread #1", (void*)7);
-	
+	SDL_Texture* backgrTexture = LoadTexture("M-N.png", renderTarg);
+	SDL_QueryTexture(backgrTexture, NULL, NULL, &backgrWidth, &backgrHeight);
+
 	while (isRunning) {
 		prevTime = currentTime;
 		currentTime = SDL_GetTicks();
@@ -58,16 +70,29 @@ int main(int argc, char** argv) {
 
 		player.IntersectsWith(player1);
 
+		cameraR.x = player.GetCenterX() - 500;
+		cameraR.y = player.GetCenterY() - 400;
+		if (cameraR.x < 0)
+			cameraR.x = 0;
+		if (cameraR.y < 0)
+			cameraR.y = 0;
+		if (cameraR.x + cameraR.w >= backgrWidth)
+			cameraR.x = backgrWidth - 1000;
+		if (cameraR.y + cameraR.h >= backgrHeight)
+			cameraR.y = backgrHeight - 800;
+
 		SDL_RenderClear(renderTarg);//Clear the current rendering target with the drawing color.
-		player.Draw(renderTarg);
-		player1.Draw(renderTarg);
+		SDL_RenderCopy(renderTarg, backgrTexture, &cameraR, NULL);
+		player.Draw(renderTarg, cameraR);
+		player1.Draw(renderTarg, cameraR);
 		SDL_RenderPresent(renderTarg); //Update the screen
 	}
-	SDL_WaitThread(thread1, NULL);
 
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderTarg);
+	SDL_DestroyTexture(backgrTexture);
 
+	backgrTexture = nullptr;
 	window = nullptr;
 	renderTarg = nullptr;
 	IMG_Quit();

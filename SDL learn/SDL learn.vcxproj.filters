@@ -26,6 +26,9 @@
     <Image Include="Player.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="M-N.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">

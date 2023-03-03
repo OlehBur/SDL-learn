@@ -93,8 +93,9 @@ void Player::Update(const float delta, const Uint8* keyState) {
 	}
 };
 
-void Player::Draw(SDL_Renderer* render) {
-	SDL_RenderCopy(render, texture, &frameR, &positionR);
+void Player::Draw(SDL_Renderer* render, const SDL_Rect &cameraR) {
+	SDL_Rect drawingR = {positionR.x-cameraR.x, positionR.y-cameraR.y, positionR.w, positionR.h};
+	SDL_RenderCopy(render, texture, &frameR, &drawingR/*positionR*/);
 };
 
 int& Player::GetCenterX() {

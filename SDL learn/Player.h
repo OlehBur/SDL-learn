@@ -27,7 +27,7 @@ public:
 	int& GetRadius();
 
 	void Update(const float delta, const Uint8* keyState);
-	void Draw(SDL_Renderer* render);
+	void Draw(SDL_Renderer* render, const SDL_Rect& cameraR);
 	bool IntersectsWith(Player& player);
 
 	~Player();

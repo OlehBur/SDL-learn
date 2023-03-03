@@ -146,6 +146,7 @@
     <ClCompile Include="SDL learn.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="M-N.png" />
     <Image Include="Player.png" />
   </ItemGroup>
   <ItemGroup>
