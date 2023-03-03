@@ -1,10 +1,10 @@
 #include "Player.h"
 #include <SDL_image.h>
 #include <iostream>
+#include <cmath>
 
 
-
-Player::Player(SDL_Renderer* render, string filePath, int x, int y, int framesX, int framesY) {
+Player::Player(SDL_Renderer* render, string filePath, const int& x, const int& y, const int& framesX, const int& framesY) {
 	SDL_Surface* surface = IMG_Load(filePath.c_str());
 
 	if (surface == NULL)
@@ -30,6 +30,10 @@ Player::Player(SDL_Renderer* render, string filePath, int x, int y, int framesX,
 	frameWidth = positionR.w = frameR.w;
 	frameHeight = positionR.h = frameR.h;
 
+	centerX = positionR.x + frameWidth / 2;
+	centerY = positionR.y + frameHeight / 2;
+	radius = frameHeight / 2.4;
+
 	isActive = false;
 	static int playerNumber = 0;
 	playerNumber++;
@@ -49,7 +53,7 @@ Player::Player(SDL_Renderer* render, string filePath, int x, int y, int framesX,
 	moveSpeed = 200.0f;
 };
 
-void Player::Update(float delta, const Uint8* keyState) {
+void Player::Update(const float delta, const Uint8* keyState) {
 	isActive = true;
 
 	if (keyState[keys[0]]) {
@@ -71,6 +75,9 @@ void Player::Update(float delta, const Uint8* keyState) {
 	else
 		isActive = false;
 
+	centerX = positionR.x + frameWidth / 2;
+	centerY = positionR.y + frameHeight / 2;
+
 	if (isActive) {
 		frameCntr += delta;
 
@@ -90,6 +97,30 @@ void Player::Update(float delta, const Uint8* keyState) {
 void Player::Draw(SDL_Renderer* render) {
 	SDL_RenderCopy(render, texture, &frameR, &positionR);
 };
+
+int& Player::GetCenterX() {
+	return centerX;
+};
+
+int& Player::GetCenterY() {
+	return centerY;
+};
+
+int& Player::GetRadius() {
+	return radius;
+};
+
+bool Player::IntersectsWith(/*const*/ Player& player) {
+	if (sqrt(pow(centerX - player.GetCenterX(), 2) + pow(centerY - player.GetCenterY(), 2)) >= radius + player.GetRadius()) {
+		SDL_SetTextureColorMod(texture, 255, 255, 255);
+		return false;
+	}
+	else {
+		SDL_SetTextureColorMod(texture, 255, 0, 0);
+		return true;
+	}
+};
+
 
 Player::~Player() {
 	SDL_DestroyTexture(texture);

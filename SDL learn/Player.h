@@ -13,15 +13,23 @@ class Player
 		frameCntr{ 0.0f };
 	int frameWidth{ 0 }, frameHeight{ 0 };
 	int textureWidth{ 0 }, textureHeight{ 0 };
+	int centerX, centerY, radius;
 	bool isActive;
 	SDL_Scancode keys[4];
 
 public:
 	SDL_Rect positionR;
 
-	Player(SDL_Renderer* render, string filePath, int x, int y, int framesX, int framesY);
-	void Update(float delta, const Uint8* keyState);
+	Player(SDL_Renderer* render, string filePath, const int& x, const int& y, const int& framesX, const int& framesY);
+	
+	int& GetCenterX();
+	int& GetCenterY();
+	int& GetRadius();
+
+	void Update(const float delta, const Uint8* keyState);
 	void Draw(SDL_Renderer* render);
+	bool IntersectsWith(Player& player);
+
 	~Player();
 };
 

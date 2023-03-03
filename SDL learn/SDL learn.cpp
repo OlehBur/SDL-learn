@@ -39,12 +39,14 @@ int main(int argc, char** argv) {
 				isRunning = false;
 				break;
 			}
-
-			keyState = SDL_GetKeyboardState(NULL);
-
-			player.Update(deltaTime, keyState);
-			player1.Update(deltaTime, keyState);
 		}
+
+		keyState = SDL_GetKeyboardState(NULL);
+
+		player.Update(deltaTime, keyState);
+		player1.Update(deltaTime, keyState);
+
+		player.IntersectsWith(player1);
 
 		SDL_RenderClear(renderTarg);//Clear the current rendering target with the drawing color.
 		player.Draw(renderTarg);
